@@ -91,7 +91,7 @@ jobs:
           GOOS=darwin GOARCH=amd64 go build -o build/log-pipeline-darwin-amd64 ./cmd/...
       
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: binaries
           path: build/

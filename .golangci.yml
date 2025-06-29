@@ -10,12 +10,9 @@ linters:
     - govet
     - errcheck
     - staticcheck
-    - unused
+    - unused 
     - gosimple
-    - structcheck
-    - varcheck
     - ineffassign
-    - deadcode
     - typecheck
     - gosec
     - gocyclo
@@ -31,7 +28,7 @@ linters-settings:
     min-occurrences: 3
   misspell:
     locale: US
-  
+
 issues:
   exclude-rules:
     - path: _test\.go

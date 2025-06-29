@@ -42,7 +42,11 @@ func (mla *MultiLineAssembler) ProcessLine(line string, filesource string) *LogE
 	case parser.AccessLog:
 		completed := mla.completePendingEntry()
 
-		
+		entry := mla.processAccessLog(line, filesource)
+		mla.pendingEntry = entry
+		mla.inMultilineBlock = false
+
+		return completed
 	}
 }
 
@@ -109,7 +113,3 @@ func (mla *MultiLineAssembler) processUnknownLog(line,  fileSource string) *LogE
 	}
 }
 
-func parseAccessLogTimestamp(timestampStr string) time.Time {
-
-	
-}

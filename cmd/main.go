@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"hafiztri123/log-pipeline/parser"
+	"hafiztri123/log-pipeline/internal/parser"
 )
 
 func main() {

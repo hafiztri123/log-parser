@@ -47,6 +47,9 @@ func (mla *MultiLineAssembler) ProcessLine(line string, filesource string) *LogE
 		mla.inMultilineBlock = false
 
 		return completed
+	case parser.ApplicationLog:
+		completed := mla.completePendingEntry()
+
 	}
 }
 
@@ -70,7 +73,7 @@ func (mla *MultiLineAssembler) processAccessLog(line, filesource string) *LogEnt
 		mla.processUnknownLog(line, filesource)
 	}
 
-	timestamp := util.ParseAccessLogTimestamp(parsed["timestamp"])
+	timestamp := util.ParseLogTimestamp(parsed["timestamp"])
 	status :=  util.ParseInt(parsed["status"])
 	responseSize := util.ParseInt(parsed["size"])
 	request := parsed["request"]
@@ -113,3 +116,29 @@ func (mla *MultiLineAssembler) processUnknownLog(line,  fileSource string) *LogE
 	}
 }
 
+func (mla *MultiLineAssembler) processApplicationLog(line, filesource string) *LogEntry {
+	parsed := mla.detector.ParseApplicationLog(line)
+	if parsed == nil {
+		return mla.processUnknownLog(line, filesource)
+	}
+
+	timestamp := util.ParseLogTimestamp(parsed["timestamp"])
+	logLevel := parsed["level"]
+
+	entry := &LogEntry{
+		Timestamp: timestamp,
+		LogLevel: &logLevel,
+		SourceType: "access",
+		RawMessage: parsed["message"],
+		IPAddress : nil,
+		UserID : nil,
+		HTTPMethod : nil,
+		HTTPPath : nil,
+		HTTPStatus : nil,
+		ServiceName : nil,
+		FileSource : "",
+		ParsedData : map[string]interface{}{
+			"user_agent": "test",
+		},
+	}
+}
